@@ -145,7 +145,7 @@ GraphicDisplay.prototype.execute = function() {
 	this.drawAllComponents(this.logicDisplay.components, 0, 0);
 	
 	// Draw temporary component
-	if ( this.temporaryComponentType != null )
+	if ( this.temporaryComponentType !== null )
 		this.drawTemporaryComponent();
 	
 	// Draw to tooltip
