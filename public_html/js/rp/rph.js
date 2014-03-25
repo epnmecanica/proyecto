@@ -162,6 +162,13 @@
                     */
           };
           ilapiz.click(clickHandler);
+          var clickHandler2 = function(){
+                
+                    gd.setMode(gd.MODES.ADDRECTANGLE);
+                    
+                    
+          };
+         irectangle.click(clickHandler2);
           
  }
 
