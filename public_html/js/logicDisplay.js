@@ -10,8 +10,8 @@ function LogicDisplay() {
 }
 
 LogicDisplay.prototype.init = function() {
-	// this.test(); // This create a list of basic components
-	// this.importJSON(JSON.parse(this.exportJSON()), this.components);
+           //this.test(); // This create a list of basic components
+           //this.importJSON(JSON.parse(this.exportJSON()), this.components);
 };
 
 LogicDisplay.prototype.addComponent = function(component) {

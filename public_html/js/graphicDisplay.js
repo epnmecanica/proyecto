@@ -1,5 +1,3 @@
-
-
 /**
  * This class handle the graphical behaviour
  * of the CAD
@@ -99,7 +97,8 @@ function GraphicDisplay(displayName, width, height) {
 	this.cvn = 0; // Canvas HTML element
 	this.context; // Canvas object
 	
-	this.tooltipDefault = "WebCAD5";
+	//this.tooltipDefault = "WebCAD5";
+        this.tooltipDefault = "OpenCNC";
 	this.tooltip = this.tooltipDefault;
 	
 	this.keyboard = null;
@@ -154,12 +153,15 @@ GraphicDisplay.prototype.execute = function() {
 
 GraphicDisplay.prototype.clearGrid = function(e) {
 	this.context.restore();
-	this.context.fillStyle = "#202020";
-	this.context.fillRect(0, 0, this.displayWidth, this.displayHeight);
+	//this.context.fillStyle = "#202020";
+        this.context.fillStyle = "#3C65AB";
+        this.context.fillRect(0, 0, this.displayWidth, this.displayHeight);
+	//this.context.fillRect(0, 0, 400, 400);
 	this.context.save();
 	
 	this.context.translate(this.displayWidth/2, this.displayHeight/2);
-	this.context.strokeStyle = "#666";
+	//this.context.strokeStyle = "#666";
+	this.context.strokeStyle = "white";
 	this.context.lineWidth = 0.2;
 };
 
@@ -486,28 +488,36 @@ GraphicDisplay.prototype.drawShape = function(shape) {
 };
 
 GraphicDisplay.prototype.drawToolTip = function() {
-	/*
+	//func for draw rectangle inf
+        //coment star
 	this.context.fillStyle = "#202020";
 	this.context.fillRect(-this.displayWidth/2, this.displayHeight/2 - 20, this.displayWidth, 20);
 	this.context.strokeStyle = "black";
-	this.context.lineWidth = 1;
-	this.context.strokeRect(-this.displayWidth/2 + 1, this.displayHeight/2 - 21, this.displayWidth-2, 20);
-	*/
+        //pone sombras
+	//this.context.lineWidth = 1;
+	//this.context.strokeRect(-this.displayWidth/2 + 1, this.displayHeight/2 - 21, this.displayWidth-2, 20);
+        
+	//end
+        
 	this.context.fillStyle = "#909090";
 	this.context.font = "16px courier";
 	this.context.fillText(this.getToolTip(), -this.displayWidth/2 + 3, this.displayHeight/2-6);
+        
 };
 
 GraphicDisplay.prototype.drawOrigin = function(cx, cy) {
-	this.context.lineWidth = 0.5;
-	this.context.strokeStyle = "#fff";
-	
+	this.context.lineWidth = 0.8;
+        // Origen Horizontal
+	//this.context.strokeStyle = "#fff";
+	this.context.strokeStyle = "red";
 	this.context.beginPath();
 	this.context.moveTo(cx * this.zoom, -this.displayHeight);
 	this.context.lineTo(cx * this.zoom, this.displayHeight);
 	this.context.closePath();
 	this.context.stroke();
-	
+        
+        //Origen Vertical
+	this.context.strokeStyle = "green";
 	this.context.beginPath();
 	this.context.moveTo(-this.displayWidth, cy * this.zoom);
 	this.context.lineTo(this.displayWidth, cy * this.zoom);
@@ -528,7 +538,8 @@ GraphicDisplay.prototype.drawRules = function() {
 		this.context.lineTo(this.getCursorXInFrame(), this.displayHeight);
 		this.context.closePath();
 		this.context.stroke();
-		
+                
+		// horizontal
 		this.context.beginPath();
 		this.context.moveTo(-this.displayWidth, this.getCursorYInFrame());
 		this.context.lineTo(this.displayWidth, this.getCursorYInFrame());
@@ -541,7 +552,8 @@ GraphicDisplay.prototype.drawRules = function() {
 
 GraphicDisplay.prototype.drawGrid = function(camXoff, camYoff) {
 	var naught = (camXoff % this.gridSpacing) * this.zoom - this.displayWidth/2;
-	
+        
+	// hace la grilla vertical
 	for (var i = 0; i < 1 + this.displayWidth / this.gridSpacing / this.zoom; i++){
 		this.context.beginPath();
 		this.context.moveTo(naught, -this.displayHeight);
@@ -557,11 +569,12 @@ GraphicDisplay.prototype.drawGrid = function(camXoff, camYoff) {
 		naught = (camYoff % this.gridSpacing) * this.zoom - this.displayHeight/2 + this.gridSpacing/2 * this.zoom;
 	else
 		naught = (camYoff % this.gridSpacing) * this.zoom - this.displayHeight/2;
-	
-	for (var i = 1 + this.displayHeight / this.gridSpacing / this.zoom; i >= 0; i--){
+            
+	// hace la grilla horizontal
+	for (var i = 1 + this.displayHeight / this.gridSpacing / this.zoom ; i >= 0; i--){
 		this.context.beginPath();
 		this.context.moveTo(-this.displayWidth, naught);
-		this.context.lineTo(this.displayWidth, naught);
+		this.context.lineTo(this.displayWidth , naught);
 		this.context.closePath();
 		this.context.stroke();
 		
@@ -591,7 +604,7 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 						this.temporaryPoints[1]));
 				this.resetMode();
 			}
-			this.tooltip = "Add point";
+			this.tooltip = "Add punto";
 			break;
 		case this.MODES.ADDLINE:
 			if (e.which === 3)
@@ -624,7 +637,7 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 					this.temporaryPoints[1] = this.temporaryPoints[3];
 				}
 			}
-			this.tooltip = "Add line";
+			this.tooltip = "Add linea";
 			break;
 		case this.MODES.ADDCIRCLE:
 			this.cvn.css('cursor', 'default');
@@ -652,7 +665,7 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 					this.resetMode();
 				}
 			}
-			this.tooltip = "Add circle";
+			this.tooltip = "Add circulo";
 			break;
 		case this.MODES.ADDARC:
 			this.cvn.css('cursor', 'default');
@@ -719,7 +732,7 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 					this.resetMode();
 				}
 			}
-			this.tooltip = "Add rectangle";
+			this.tooltip = "Add rectangulo";
 			break;
 		case this.MODES.ADDMEASURE:
 			this.cvn.css('cursor', 'default');
@@ -747,7 +760,7 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 					this.resetMode();
 				}
 			}
-			this.tooltip = "Add measure";
+			this.tooltip = "Add medida";
 			break;
 		case this.MODES.ADDLABEL:
 			this.cvn.css('cursor', 'default');
@@ -768,7 +781,7 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 					this.resetMode();
 				}
 			}
-			this.tooltip = "Add label";
+			this.tooltip = "Add texto";
 			break;
 		case this.MODES.ADDSHAPE:
 			this.cvn.css('cursor', 'default');
@@ -795,7 +808,7 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 				this.camX += this.getCursorXLocal() - this.xCNaught;
 				this.camY += this.getCursorYLocal() - this.yCNaught;
 			}
-			this.tooltip = "Navigate";
+			this.tooltip = "Navegar";
 			break;
 		case this.MODES.MOVE:
 			this.cvn.css('cursor', 'default');
@@ -817,11 +830,11 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 					this.unselectComponent();
 				}
 			}
-			this.tooltip = "Move";
+			this.tooltip = "Mover";
 			break;
 		case this.MODES.EDIT:
 			// TODO: In the next release
-			this.tooltip = "Edit";
+			this.tooltip = "Editar";
 			break;
 		case this.MODES.DELETE:
 			this.cvn.css('cursor', 'default');
@@ -832,11 +845,11 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 							this.getCursorYLocal());
 				}
 			} else if ( action === this.MOUSEACTION.DOWN ) {
-				if ( this.temporarySelectedComponent !== null && confirm("Delete this component?") ) {
+				if ( this.temporarySelectedComponent !== null && confirm("Desea borrar este componente?") ) {
 					this.logicDisplay.components[this.temporarySelectedComponent].setActive(false);
 				}
 			}
-			this.tooltip = "Delete";
+			this.tooltip = "Borrar";
 			break;
 		default:
 			this.tooltip = this.tooltipDefault;
