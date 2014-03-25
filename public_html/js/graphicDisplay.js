@@ -1054,7 +1054,7 @@ GraphicDisplay.prototype.getAngle = function(x1, y1, x2, y2) {
 		if (y2 < y1)
 			theta = (PI/2)*3;
 	}
-	
+	//this.tooltip = theta;
 	return theta;
 };
 

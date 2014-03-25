@@ -11,6 +11,7 @@
                                 
 				
 				// Button behaviour
+                                /*
 				$("#gd_navigate").click(function(){gd.setMode(gd.MODES.NAVIGATE);});
 				$("#gd_move").click(function(){gd.setMode(gd.MODES.MOVE);});
 				$("#gd_edit").click(function(){gd.setMode(gd.MODES.EDIT);});
@@ -26,7 +27,7 @@
 				$("#gd_addrectangle").click(function(){gd.setMode(gd.MODES.ADDRECTANGLE);});
 				$("#gd_addmeasure").click(function(){gd.setMode(gd.MODES.ADDMEASURE);});
 				$("#gd_addlabel").click(function(){gd.setMode(gd.MODES.ADDLABEL);});
-				
+				*/
 				// # # # CUSTOM BINDING # # # 
 				/*
                                 $("#gd_add_serbatoio_orizzontale").click(function(){
@@ -54,5 +55,10 @@
 				});
 				// # # # END CUSTOM BINDING # # # 
 				*/
+                                
+                                    
+                                   
+                                loadIcons(gd);
 				initCAD(gd);
+                                
 			});

@@ -2,9 +2,14 @@
 <html>
 	<head>
                 <title>OpenCNC</title>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-		
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width">
+		<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
+                <script src="js/lib/external/jquery.min.js"></script>
+		<!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>-->
+                <script src="js/lib/external/jquery-ui.min.js"></script>
+		<script src="js/lib/external/raphael-min.js"></script>	
+                <script type="text/javascript" src="js/rp/rph.js"></script>
 		<script src="js/component.js"></script>
 		<!--<script src="js/customShapes.js"></script>-->
 		<script src="js/inputHandler.js"></script>
@@ -12,10 +17,10 @@
 		<script src="js/graphicDisplay.js"></script>
                 <script src="js/world.js"></script>
 		<link href="styles/main.css" rel="stylesheet">
-                <script src="js/lib/external/raphael-min.js"></script>	
-                <script type="text/javascript" src="js/lib/rp/rph.js"></script>
+               
 	</head>
-	<body>
+	<body>  
+            <!--
 		<input id="gd_navigate" type="button" value="Navegar" />
 		<input id="gd_move" type="button" value="Mover" />
 		<input id="gd_edit" type="button" value="Modificar" />
