@@ -1,23 +1,19 @@
-
+<!DOCTYPE html>
 <html>
 	<head>
+                <title>OpenCNC</title>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 		
 		<script src="js/component.js"></script>
-		<script src="js/customShapes.js"></script>
+		<!--<script src="js/customShapes.js"></script>-->
 		<script src="js/inputHandler.js"></script>
 		<script src="js/logicDisplay.js"></script>
 		<script src="js/graphicDisplay.js"></script>
                 <script src="js/world.js"></script>
 		<link href="styles/main.css" rel="stylesheet">
-		
-		<style type="text/css">
-		#CADDisplay {
-			border: 3px inset #ccc;
-                       
-		}
-		</style>
+                <script src="js/lib/external/raphael-min.js"></script>	
+                <script type="text/javascript" src="js/lib/rp/rph.js"></script>
 	</head>
 	<body>
 		<input id="gd_navigate" type="button" value="Navegar" />
@@ -49,10 +45,15 @@
 		<input id="gd_add_autobotte" type="button" value="autobotte" />
                 -->
 		<hr/>
-		<canvas id="CADCanvas"
-				width="800"
-				height="600"
-				onContextMenu="javascript: return false;"
-				tabindex="1"></canvas>
-	</body>
+                <div class="cad">
+                    <div id="titulo">OpenCNC</div>
+                    <div id="paper2"></div>
+                    <canvas id="CADCanvas"
+                                    width="800"
+                                    height="600"
+                                    onContextMenu="javascript: return false;"
+                                    tabindex="1"></canvas>
+                    <div id="paper"></div>
+                </div>
+                </body>
 </html>

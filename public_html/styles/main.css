@@ -13,4 +13,36 @@ html, body
         background-color: #333;
         
         }
+.cad #paper{
+	/*1245*0.618*/
+	width:600px;
+	height:700px;
+	border: 1px solid #000000;
+	position:relative;
+	top:0;
+	left:0;
+	cursor:crosshair;
+        background-color: red;
+}
+.cad #paper2{
+	/*1245*0.618*/
+	width:800px;
+	height:30px;
+	border: 1px solid #000000;
+	position:relative;
+	top:0;
+	left:0;
+        background-color: #BDBDBD;
+}
+.cad #titulo{
+	
+	width:800px;
+	height:50px;
+        color: white;
+        text-align: center;
+        font-size:36px;
+	position:relative;
+	top:0;
+	left:0;
+}
 

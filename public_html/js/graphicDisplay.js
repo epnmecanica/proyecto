@@ -527,17 +527,6 @@ GraphicDisplay.prototype.drawOrigin = function(cx, cy) {
         
 };
 
-GraphicDisplay.prototype.drawBox = function(cx , cy){
-        this.context.lineWidth = 1;
-        this.context.strokeStyle = "white";
-        this.context.beginPath();
-        this.context.moveTo(0,0);
-	this.context.lineTo(300,300);
-	this.context.closePath();
-	this.context.stroke();
-        
-}
-
 GraphicDisplay.prototype.drawRules = function() {
 	if (!this.showRules)
 		return;
