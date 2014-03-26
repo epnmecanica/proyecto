@@ -2,6 +2,7 @@
  * This class handle the graphical behaviour
  * of the CAD
  */
+// habilita funciones de grafico
 function GraphicDisplay(displayName, width, height) {
 	// Enumerate all available modes
 	this.MODES = {
@@ -105,6 +106,7 @@ function GraphicDisplay(displayName, width, height) {
 	this.mouse = null;
 }
 
+//inicializa la logica del display
 GraphicDisplay.prototype.init = function() {
 	/*
 	 * INITIALIZE THE LOGIC
@@ -122,6 +124,9 @@ GraphicDisplay.prototype.init = function() {
 	this.cvn.css('cursor','crosshair');
 	this.context = this.cvn[0].getContext('2d');
 };
+
+// se ejecuta despues de las logica y ayuda a la ejecucion de 
+// funciones para graficos
 
 GraphicDisplay.prototype.execute = function() {
 	this.offsetX = this.cvn.offset().left;
@@ -152,6 +157,7 @@ GraphicDisplay.prototype.execute = function() {
 	this.drawToolTip();
 };
 
+// hace la cuadricula
 GraphicDisplay.prototype.clearGrid = function(e) {
 	this.context.restore();
 	//this.context.fillStyle = "#202020";
@@ -166,6 +172,7 @@ GraphicDisplay.prototype.clearGrid = function(e) {
 	this.context.lineWidth = 0.2;
 };
 
+//dibuja los componentes
 GraphicDisplay.prototype.drawAllComponents = function(components, moveByX, moveByY) {
 	for (var i = 0; i < components.length; i++) {
 		if ( !components[i].isActive() )
@@ -175,6 +182,7 @@ GraphicDisplay.prototype.drawAllComponents = function(components, moveByX, moveB
 	}
 };
 
+// dibuja un solo componente 
 GraphicDisplay.prototype.drawComponent = function(component, moveByX, moveByY) {
 	switch (component.type) {
 		case COMPONENT_TYPES.POINT:
@@ -346,6 +354,7 @@ GraphicDisplay.prototype.drawTemporaryComponent = function() {
 	} 
 };
 
+// dibuja puntos cuando se activa el boton.
 GraphicDisplay.prototype.drawPoint = function(x, y, color, radius) {
 	this.context.lineWidth = radius;
 	this.context.fillStyle = color;
@@ -359,7 +368,10 @@ GraphicDisplay.prototype.drawPoint = function(x, y, color, radius) {
 	this.context.stroke();
 };
 
+// dibuja linea cuando se activa el boton.
 GraphicDisplay.prototype.drawLine = function(x1, y1, x2, y2, color, radius) {
+        
+        var firstAngle = this.getAngle(x1, y1, x2, y2);
 	this.context.lineWidth = radius;
 	this.context.fillStyle = color;
 	this.context.strokeStyle = color;
@@ -375,8 +387,10 @@ GraphicDisplay.prototype.drawLine = function(x1, y1, x2, y2, color, radius) {
 	
 	this.drawPoint(x1, y1, color, radius);
 	//this.drawPoint(x2, y2, color, radius);
+        this.setToolTip('Angulo: ' + firstAngle);
 };
 
+// dibuja circulos cuando se activa el boton.
 GraphicDisplay.prototype.drawCircle = function(x1, y1, x2, y2, color, radius) {
 	this.context.lineWidth = radius;
 	this.context.fillStyle = color;
@@ -393,6 +407,7 @@ GraphicDisplay.prototype.drawCircle = function(x1, y1, x2, y2, color, radius) {
 	this.drawPoint(x1, y1, color, radius);
 };
 
+//Dibuja rectangulo cuando se activa el boton
 GraphicDisplay.prototype.drawRectangle = function(x1, y1, x2, y2, color, radius) {
 	this.drawLine(x1, y1, x2, y1, color, radius);
 	this.drawLine(x2, y1, x2, y2, color, radius);
@@ -400,6 +415,7 @@ GraphicDisplay.prototype.drawRectangle = function(x1, y1, x2, y2, color, radius)
 	this.drawLine(x1, y2, x1, y1, color, radius);
 };
 
+// Dibuja una medida.
 GraphicDisplay.prototype.drawMeasure = function(x1, y1, x2, y2, color, radius) {
 	var distance = this.getDistance(x1, y1, x2, y2) * this.unitFactor * this.unitConversionFactor;
 	
@@ -421,6 +437,7 @@ GraphicDisplay.prototype.drawMeasure = function(x1, y1, x2, y2, color, radius) {
 			(this.cOutY + y2 + 30 + localDiff) * this.zoom);
 };
 
+// inserta un texto.
 GraphicDisplay.prototype.drawLabel = function(x, y, text, color, radius) {
 	this.drawPoint(x, y, '#0ff', 2);
 	
@@ -463,6 +480,7 @@ GraphicDisplay.prototype.drawLabel = function(x, y, text, color, radius) {
 			(this.cOutY + y + 30) * this.zoom);
 };
 
+// dibuja arcos.
 GraphicDisplay.prototype.drawArc = function(x1, y1, x2, y2, x3, y3, color, radius) {
 	var firstAngle = this.getAngle(x1, y1, x2, y2);
 	var secondAngle = this.getAngle(x1, y1, x3, y3);
@@ -483,11 +501,13 @@ GraphicDisplay.prototype.drawArc = function(x1, y1, x2, y2, x3, y3, color, radiu
 	this.drawPoint(x3, y3, color, radius);
 };
 
+// dibuja formas
 GraphicDisplay.prototype.drawShape = function(shape) {
 	this.drawAllComponents(shape.components, shape.x, shape.y);
 	this.drawPoint(shape.x, shape.y, shape.color, shape.radius);
 };
 
+//Dibuja el cuadro inferior de coordenadas
 GraphicDisplay.prototype.drawToolTip = function() {
 	//func for draw rectangle inf
         //coment star
@@ -506,6 +526,7 @@ GraphicDisplay.prototype.drawToolTip = function() {
         
 };
 
+// dibuja origenes
 GraphicDisplay.prototype.drawOrigin = function(cx, cy) {
 	this.context.lineWidth = 0.8;
         // Origen Horizontal
@@ -527,6 +548,7 @@ GraphicDisplay.prototype.drawOrigin = function(cx, cy) {
         
 };
 
+// dibuja reglas guias
 GraphicDisplay.prototype.drawRules = function() {
 	if (!this.showRules)
 		return;
@@ -552,6 +574,7 @@ GraphicDisplay.prototype.drawRules = function() {
 	// TODO Show rules!
 };
 
+// dibuja la cuadricula
 GraphicDisplay.prototype.drawGrid = function(camXoff, camYoff) {
 	var naught = (camXoff % this.gridSpacing) * this.zoom - this.displayWidth/2;
         
@@ -590,6 +613,8 @@ GraphicDisplay.prototype.drawGrid = function(camXoff, camYoff) {
  * @param e
  * @param action
  */
+
+// determina que componente es seleccionado para dibujar.
 GraphicDisplay.prototype.performAction = function(e, action) {
 	switch(this.mode) {
 		case this.MODES.ADDPOINT:
@@ -858,6 +883,7 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 	}
 };
 
+// mueve los componentes
 GraphicDisplay.prototype.moveComponent = function(index, x, y) {
 	if (index !== null) {
 		switch ( this.logicDisplay.components[index].type ) {
@@ -897,6 +923,7 @@ GraphicDisplay.prototype.moveComponent = function(index, x, y) {
 	}
 };
 
+// selecciona el componente
 GraphicDisplay.prototype.selectComponent = function(index) {
 	if (index !== null) {
 		this.selectedComponent = index;
@@ -907,6 +934,7 @@ GraphicDisplay.prototype.selectComponent = function(index) {
 	}
 };
 
+// quita la seleccion del componente
 GraphicDisplay.prototype.unselectComponent = function() {
 	if ( this.selectedComponent !== null ) {
 		this.logicDisplay.components[this.selectedComponent].color = this.previousColor;
@@ -915,6 +943,7 @@ GraphicDisplay.prototype.unselectComponent = function() {
 	}
 };
 
+// Carga la camara
 GraphicDisplay.prototype.updateCamera = function() {
 	this.cOutX = this.camX;
 	this.cOutY = this.camY;
@@ -994,8 +1023,8 @@ GraphicDisplay.prototype.setToolTip = function(text) {
 
 GraphicDisplay.prototype.getToolTip = function() {
 	var text = this.tooltip;
-	
-	text += " | (" + this.getCursorXLocal() + "," + this.getCursorYLocal() + ")";
+	// normalice las medidas
+	text += " | (" + this.getCursorXLocal() + "," + (-1)*(this.getCursorYLocal()) + ")";
 	
 	return text;
 };
@@ -1039,11 +1068,15 @@ GraphicDisplay.prototype.findIntersectionWith = function(x, y) {
 /**
  * Return the angle in radiants
  */
+
+
 GraphicDisplay.prototype.getAngle = function(x1, y1, x2, y2) {
 	var PI = 3.14159265359;
-	var theta = Math.atan((y2 - y1) / (x2 - y2)) * (PI/180);
 	
-	if (x2 < x1)
+        //var theta = (Math.atan((y2 - y1) / (x2 - x1))*180)/(PI); // en grados
+	var theta = (Math.atan((y2 - y1) / (x2 - x1))); // en radianes
+	/*
+        if (x2 < x1)
 		theta -= PI;
 	else if (y2 > y1)
 		theta -= PI*2;
@@ -1054,6 +1087,7 @@ GraphicDisplay.prototype.getAngle = function(x1, y1, x2, y2) {
 		if (y2 < y1)
 			theta = (PI/2)*3;
 	}
+    */
 	//this.tooltip = theta;
 	return theta;
 };

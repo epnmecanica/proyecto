@@ -122,25 +122,29 @@
             j++;
         } 
         this.ilapiz.translate(iconsArray[0],0).show();
-        this.iback.translate(iconsArray[1],0).show();
-        this.inew.translate(iconsArray[2],0).show();
-        this.iretro.translate(iconsArray[3],0).show();
-        this.iadvan.translate(iconsArray[4],0).show();
-        this.iwizar.translate(iconsArray[5],0).show();
-        this.idim.translate(iconsArray[6],0).show();
+        this.irectangle.translate(iconsArray[1],0).show();
+        this.idot.translate(iconsArray[2],0).show();
+        this.isync.translate(iconsArray[3],0).show();
+        this.ilabel.translate(iconsArray[4],0).show();
+        this.idim.translate(iconsArray[5],0).show();
         
-        this.icreateG.translate(iconsArray[9],0).show();
-        this.iadd.translate(iconsArray[10],0).show();
-        this.iless.translate(iconsArray[11],0).show();
-        this.isave.translate(iconsArray[12],0).show();
-        this.imove.translate(iconsArray[13],0).show();
-        this.ihand.translate(iconsArray[14],0).show();
-        this.izoomless.translate(iconsArray[15],0).show();
-        this.izoompluss.translate(iconsArray[16],0).show();
-        this.irectangle.translate(iconsArray[17],0).show();
-        this.isync.translate(iconsArray[18],0).show();
-        this.ilabel.translate(iconsArray[19],0).show();
-        this.idot.translate(iconsArray[7],0).show();
+        this.iback.translate(iconsArray[7],0).show();
+        this.iretro.translate(iconsArray[8],0).show();
+        this.iadvan.translate(iconsArray[9],0).show();
+        this.iwizar.translate(iconsArray[10],0).show();
+        
+        
+        
+        this.iadd.translate(iconsArray[12],0).show();
+        this.iless.translate(iconsArray[13],0).show();
+        this.isave.translate(iconsArray[14],0).show();
+        this.inew.translate(iconsArray[15],0).show();
+        this.icreateG.translate(iconsArray[16],0).show(); 
+        
+        this.imove.translate(iconsArray[18],0).show();
+        this.ihand.translate(iconsArray[19],0).show();
+        this.izoomless.translate(iconsArray[20],0).show();
+        this.izoompluss.translate(iconsArray[21],0).show();
         
         this.idimx.translate(iconsArray[24],0).show();
         this.iok.translate(iconsArray[25],0).show();
@@ -177,7 +181,8 @@
           iretro.mousemove(function(){
               iretro.attr({fill: colors, stroke: "none"});
           }).click(function () {
-                        
+                // crea arcos prueba
+                 gd.setMode(gd.MODES.ADDARC);       
           });
           iadvan.mousemove(function(){
               iadvan.attr({fill: colors, stroke: "none"});
