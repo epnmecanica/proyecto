@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
- var iplug, iq, irec, iretro, iadvan, iprec, istop, iback, isync, iadd, iless, inew
- imail, ihome, ilock, iunlock, idim, idimx, iok, isave, idownl, imirror_v, imirror_h
- , iredimension, iwizar, icreateG, ipaint, iproyect, ihelp, ioff, ilapiz, imove; 
  
- var lenght = 800, tall = 34, st;
+ 
+ var lenght = 800, tall = 34, paso = 30, st;
  
  function icons(){
             container = document.getElementById('paper2');
@@ -91,8 +89,11 @@
                 this.irectangle = paper.path("M5.5,5.5h20v20h-20z"),
                 //label
                 this.ilabel = paper.path("M27.87,7.863L23.024,4.82l-7.889,12.566l4.842,3.04L27.87,7.863zM14.395,21.25l-0.107,2.855l2.527-1.337l2.349-1.24l-4.672-2.936L14.395,21.25zM29.163,3.239l-2.532-1.591c-0.638-0.401-1.479-0.208-1.882,0.43l-0.998,1.588l4.842,3.042l0.999-1.586C29.992,4.481,29.802,3.639,29.163,3.239zM25.198,27.062c0,0.275-0.225,0.5-0.5,0.5h-19c-0.276,0-0.5-0.225-0.5-0.5v-19c0-0.276,0.224-0.5,0.5-0.5h13.244l1.884-3H5.698c-1.93,0-3.5,1.57-3.5,3.5v19c0,1.93,1.57,3.5,3.5,3.5h19c1.93,0,3.5-1.57,3.5-3.5V11.097l-3,4.776V27.062z"),
+                //dot
+                this.idot = paper.circle(17,17,10),
                 //mover
                 this.imove = paper.path("M25.545,23.328,17.918,15.623,25.534,8.007,27.391,9.864,29.649,1.436,21.222,3.694,23.058,5.53,15.455,13.134,7.942,5.543,9.809,3.696,1.393,1.394,3.608,9.833,5.456,8.005,12.98,15.608,5.465,23.123,3.609,21.268,1.351,29.695,9.779,27.438,7.941,25.6,15.443,18.098,23.057,25.791,21.19,27.638,29.606,29.939,27.393,21.5z")
+                
                 
                 //
                 //paper.path("M5.5,5.5h20v20h-20z");
@@ -105,14 +106,18 @@
      this.st = st;
      var col = 'black';
      st.hide();
-     st.attr({fill: col, stroke: "none"})
+     st.attr({fill: col, stroke: "none"});
+     st.mouseout(function(){
+         st.attr({fill: col, stroke: "none"});
+     });
  }
  function loadIcons(gd){
         this.gd = gd;
+        var colors = 'blue';
         var iconsArray = new Array();
         icons();
         var j = 0;
-        for (i = 1; i <= 800; i = i + 36){
+        for (i = 1; i <= 800; i = i + paso){
             iconsArray[j] = i ;
             j++;
         } 
@@ -123,8 +128,7 @@
         this.iadvan.translate(iconsArray[4],0).show();
         this.iwizar.translate(iconsArray[5],0).show();
         this.idim.translate(iconsArray[6],0).show();
-        this.idimx.translate(iconsArray[7],0).show();
-        this.iok.translate(iconsArray[8],0).show();
+        
         this.icreateG.translate(iconsArray[9],0).show();
         this.iadd.translate(iconsArray[10],0).show();
         this.iless.translate(iconsArray[11],0).show();
@@ -136,39 +140,132 @@
         this.irectangle.translate(iconsArray[17],0).show();
         this.isync.translate(iconsArray[18],0).show();
         this.ilabel.translate(iconsArray[19],0).show();
+        this.idot.translate(iconsArray[7],0).show();
         
-        
-         var clickHandler = function(){
-                /*
-                    gd.setMode(gd.MODES.ADDPOINT);
-                    gd.setMode(gd.MODES.NAVIGATE);
-                    gd.setMode(gd.MODES.MOVE);
-		    gd.setMode(gd.MODES.EDIT);
-		    gd.setMode(gd.MODES.DELETE);
-				
-	            gd.zoomIn();
-                    gd.zoomOut();
-				
-                    gd.setMode(gd.MODES.ADDPOINT);
-                    */
-                    gd.setMode(gd.MODES.ADDLINE);
-                    /*
-                    gd.setMode(gd.MODES.ADDCIRCLE);
-                    gd.setMode(gd.MODES.ADDARC);
-                    gd.setMode(gd.MODES.ADDRECTANGLE);
-                    gd.setMode(gd.MODES.ADDMEASURE);
-                    gd.setMode(gd.MODES.ADDLABEL);
-                    //iplug.glow();
-                    */
-          };
-          ilapiz.click(clickHandler);
-          var clickHandler2 = function(){
-                
-                    gd.setMode(gd.MODES.ADDRECTANGLE);
-                    
-                    
-          };
-         irectangle.click(clickHandler2);
+        this.idimx.translate(iconsArray[24],0).show();
+        this.iok.translate(iconsArray[25],0).show();
           
+                    /*	             
+                    gd.setMode(gd.MODES.ADDARC);
+                    //iplug.glow();
+     
+     .mousemove(function(){
+              ilapiz.attr({fill: "blue", stroke: "none"});
+          }).click(function () {
+             gd.zoomIn();
+            
+          });
+     
+                    */
+          ilapiz.mousemove(function(){
+              ilapiz.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+            gd.setMode(gd.MODES.ADDLINE);
+            
+          });
+          iback.mousemove(function(){
+              iback.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+                        
+          });
+          inew.mousemove(function(){
+              inew.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+              window.open('http://localhost:8383/WebCad5/index.html','','width=600\n\
+                ,height=400,left=50,top=50,toolbar=yes');
+          });
+          iretro.mousemove(function(){
+              iretro.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+                        
+          });
+          iadvan.mousemove(function(){
+              iadvan.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+                        
+          });
+          iwizar.mousemove(function(){
+              iwizar.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+            gd.setMode(gd.MODES.EDIT);         
+          });
+          idim.mousemove(function(){
+              idim.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+             gd.setMode(gd.MODES.ADDMEASURE);
+            
+          });
+          idimx.mousemove(function(){
+              idimx.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+            
+          });
+          iok.mousemove(function(){
+              iok.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+                         
+          });
+          icreateG.mousemove(function(){
+              icreateG.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+                         
+          });
+          iadd.mousemove(function(){
+              iadd.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+                         
+          });
+          iless.mousemove(function(){
+              iless.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+             gd.setMode(gd.MODES.DELETE);
+          });
+          isave.mousemove(function(){
+              isave.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+                         
+          });
+          imove.mousemove(function(){
+              imove.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+             gd.setMode(gd.MODES.MOVE);
+            
+          });
+          ihand.mousemove(function(){
+              ihand.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+             gd.setMode(gd.MODES.NAVIGATE);
+          });
+          izoomless.mousemove(function(){
+              izoomless.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+             gd.zoomOut();  
+          });
+          izoompluss.mousemove(function(){
+              izoompluss.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+             gd.zoomIn();
+          });
+          irectangle.mousemove(function(){
+              irectangle.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+             gd.setMode(gd.MODES.ADDRECTANGLE);            
+          });
+          isync.mousemove(function(){
+              isync.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+             gd.setMode(gd.MODES.ADDCIRCLE);
+          });
+          ilabel.mousemove(function(){
+              ilabel.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+             gd.setMode(gd.MODES.ADDLABEL);   
+          });
+          idot.mousemove(function(){
+              idot.attr({fill: colors, stroke: "none"});
+          }).click(function () {
+             gd.setMode(gd.MODES.ADDPOINT);
+          });
  }
+
 
