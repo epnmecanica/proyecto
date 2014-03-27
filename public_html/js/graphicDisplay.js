@@ -489,16 +489,27 @@ GraphicDisplay.prototype.drawArc = function(x1, y1, x2, y2, x3, y3, color, radiu
 	this.context.fillStyle = color;
 	this.context.strokeStyle = color;
 	this.context.beginPath();
-	this.context.arc(
-			(x1 + this.cOutX) * this.zoom, 
-		    (y1 + this.cOutY) * this.zoom, 
-		    this.getDistance(x1, y1, x2, y2) * this.zoom,
-		    firstAngle, secondAngle, false);
-	this.context.stroke();
+        if (x3>x1){
+            this.context.arc(
+                            (x1 + this.cOutX) * this.zoom, 
+                        (y1 + this.cOutY) * this.zoom, 
+                        this.getDistance(x1, y1, x2, y2) * this.zoom,
+                        firstAngle, secondAngle, false);
+            this.context.stroke();
+        }else{
+            this.context.arc(
+                            (x1 + this.cOutX) * this.zoom, 
+                        (y1 + this.cOutY) * this.zoom, 
+                        this.getDistance(x1, y1, x2, y2) * this.zoom,
+                        firstAngle, secondAngle, true);
+            this.context.stroke();
+        }
+            
 	
 	this.drawPoint(x1, y1, color, radius);
 	this.drawPoint(x2, y2, color, radius);
-	this.drawPoint(x3, y3, color, radius);
+	//this.drawPoint(x3, y3, color, radius);
+        //this.setToolTip('Angulo: ' + firstAngle + ' ' + secondAngle);
 };
 
 // dibuja formas
@@ -1071,25 +1082,25 @@ GraphicDisplay.prototype.findIntersectionWith = function(x, y) {
 
 
 GraphicDisplay.prototype.getAngle = function(x1, y1, x2, y2) {
-	var PI = 3.14159265359;
-	
-        //var theta = (Math.atan((y2 - y1) / (x2 - x1))*180)/(PI); // en grados
-	var theta = (Math.atan((y2 - y1) / (x2 - x1))); // en radianes
-	/*
-        if (x2 < x1)
-		theta -= PI;
-	else if (y2 > y1)
-		theta -= PI*2;
-	
-	if (x2 === x1) {
-		theta = PI/2;
-		
-		if (y2 < y1)
-			theta = (PI/2)*3;
-	}
-    */
+	var m = ((y2 - y1) / (x2 - x1));
+        var rad = 0, theta = 0;
+        
+        theta = Math.atan(m) * (180/Math.PI);
+        if(theta < 0 && x2 < x1 && y2 > y1){
+            theta = ((-1 * theta) + 180);
+        }
+        if(theta < 0){
+            theta = -1 * theta;
+        }
+        if (theta > 0 && x2 > x1 && y2 > y1){
+            theta = 360 - theta;
+        }
+        if (x2 < x1 && y2 < y1){
+            theta = 180 - theta;
+        }
+        rad = ((theta * Math.PI) / 180);
 	//this.tooltip = theta;
-	return theta;
+	return -1 * rad;
 };
 
 /*
