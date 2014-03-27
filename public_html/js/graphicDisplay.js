@@ -3,6 +3,7 @@
  * of the CAD
  */
 // habilita funciones de grafico
+var k;
 function GraphicDisplay(displayName, width, height) {
 	// Enumerate all available modes
 	this.MODES = {
@@ -372,22 +373,54 @@ GraphicDisplay.prototype.drawPoint = function(x, y, color, radius) {
 GraphicDisplay.prototype.drawLine = function(x1, y1, x2, y2, color, radius) {
         
         var firstAngle = this.getAngle(x1, y1, x2, y2);
+        firstAngle = Math.round((firstAngle * (-180 / Math.PI)));
+        
 	this.context.lineWidth = radius;
 	this.context.fillStyle = color;
 	this.context.strokeStyle = color;
 	this.context.beginPath();
+        if ( k === 's' && (firstAngle > 350 && firstAngle < 10) || 
+                (firstAngle > 170 && firstAngle < 190)){
+            this.context.moveTo(
+			(x1 + this.cOutX) * this.zoom,
+			(y1 + this.cOutY) * this.zoom);
+            this.context.lineTo(
+			(x2 + this.cOutX) * this.zoom,
+			(y1 + this.cOutY) * this.zoom);
+        }
+        /*
+        if ( k === 's' && (firstAngle > 80 && firstAngle < 100) || 
+                (firstAngle > 260 && firstAngle < 280)){
+            this.context.moveTo(
+			(x1 + this.cOutX) * this.zoom,
+			(y1 + this.cOutY) * this.zoom);
+            this.context.lineTo(
+			(x1 + this.cOutX) * this.zoom,
+			(y2 + this.cOutY) * this.zoom);
+        }
+        */
+            this.context.moveTo(
+			(x1 + this.cOutX) * this.zoom,
+			(y1 + this.cOutY) * this.zoom);
+            this.context.lineTo(
+			(x2 + this.cOutX) * this.zoom,
+			(y2 + this.cOutY) * this.zoom);
+        
+        /*
 	this.context.moveTo(
 			(x1 + this.cOutX) * this.zoom,
 			(y1 + this.cOutY) * this.zoom);
 	this.context.lineTo(
 			(x2 + this.cOutX) * this.zoom,
 			(y2 + this.cOutY) * this.zoom);
-	this.context.closePath();
+	*/
+        this.context.closePath();
 	this.context.stroke();
 	
 	this.drawPoint(x1, y1, color, radius);
 	//this.drawPoint(x2, y2, color, radius);
-        this.setToolTip('Angulo: ' + firstAngle);
+        //this.setToolTip('Angulo: ' + firstAngle);
+        this.setToolTip(k);
 };
 
 // dibuja circulos cuando se activa el boton.
@@ -1032,6 +1065,14 @@ GraphicDisplay.prototype.setToolTip = function(text) {
 	this.tooltip = text;
 };
 
+GraphicDisplay.prototype.setKeyboard =function(ky){
+        this.keyboard = ky;
+};
+GraphicDisplay.prototype.getKeyboard =function(){
+    var ky = this.keyboard;
+    return ky;
+};
+
 GraphicDisplay.prototype.getToolTip = function() {
 	var text = this.tooltip;
 	// normalice las medidas
@@ -1131,7 +1172,14 @@ var initCAD = function(gd) {
 	gd.keyboard.addKeyEvent(true, gd.keyboard.KEYS.O, function(){
 		gd.zoomOut();
 	});
-	
+        gd.keyboard.addKeyEvent(true, gd.keyboard.KEYS.N, function(){
+                gd.setMode(gd.MODES.NAVIGATE);
+        });
+        // cuando se presione SHIFT se hagan lineas rectas.
+	gd.keyboard.addKeyEvent(true, gd.keyboard.KEYS.SHIFT, function(){
+               k = "s";
+        });
+       
 	// Bind mouse events
 	gd.cvn.mousemove(function(e) {
 		gd.mouse.onMouseMove(e);
