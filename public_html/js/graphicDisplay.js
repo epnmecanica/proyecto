@@ -1065,13 +1065,6 @@ GraphicDisplay.prototype.setToolTip = function(text) {
 	this.tooltip = text;
 };
 
-GraphicDisplay.prototype.setKeyboard =function(ky){
-        this.keyboard = ky;
-};
-GraphicDisplay.prototype.getKeyboard =function(){
-    var ky = this.keyboard;
-    return ky;
-};
 
 GraphicDisplay.prototype.getToolTip = function() {
 	var text = this.tooltip;
