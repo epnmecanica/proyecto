@@ -47,3 +47,25 @@ html, body
 	left:0;
 }
 
+#comandos {
+    
+    margin: auto;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    margin-top: 60px;   /* height/2 = 500px / 2 */
+    margin-left: 850px;  
+    border-radius: 20px;
+     
+}
+textarea{
+    background:#6E6E6E;
+    border-radius: 2px;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+    border-left-style: none;
+    color: white;
+    text-align: left;
+}
+

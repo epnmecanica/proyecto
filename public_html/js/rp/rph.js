@@ -91,6 +91,10 @@
                 this.ilabel = paper.path("M27.87,7.863L23.024,4.82l-7.889,12.566l4.842,3.04L27.87,7.863zM14.395,21.25l-0.107,2.855l2.527-1.337l2.349-1.24l-4.672-2.936L14.395,21.25zM29.163,3.239l-2.532-1.591c-0.638-0.401-1.479-0.208-1.882,0.43l-0.998,1.588l4.842,3.042l0.999-1.586C29.992,4.481,29.802,3.639,29.163,3.239zM25.198,27.062c0,0.275-0.225,0.5-0.5,0.5h-19c-0.276,0-0.5-0.225-0.5-0.5v-19c0-0.276,0.224-0.5,0.5-0.5h13.244l1.884-3H5.698c-1.93,0-3.5,1.57-3.5,3.5v19c0,1.93,1.57,3.5,3.5,3.5h19c1.93,0,3.5-1.57,3.5-3.5V11.097l-3,4.776V27.062z"),
                 //dot
                 this.idot = paper.circle(17,17,10),
+                /* Cualquier icono que se incorpore debe ponerse aqui y finalizado con ","
+                 * 
+                 * @type @exp;paper@call;path
+                 */
                 //mover
                 this.imove = paper.path("M25.545,23.328,17.918,15.623,25.534,8.007,27.391,9.864,29.649,1.436,21.222,3.694,23.058,5.53,15.455,13.134,7.942,5.543,9.809,3.696,1.393,1.394,3.608,9.833,5.456,8.005,12.98,15.608,5.465,23.123,3.609,21.268,1.351,29.695,9.779,27.438,7.941,25.6,15.443,18.098,23.057,25.791,21.19,27.638,29.606,29.939,27.393,21.5z")
                 
@@ -145,7 +149,7 @@
         this.ihand.translate(iconsArray[19],0).show();
         this.izoomless.translate(iconsArray[20],0).show();
         this.izoompluss.translate(iconsArray[21],0).show();
-        
+           
         this.idimx.translate(iconsArray[24],0).show();
         this.iok.translate(iconsArray[25],0).show();
           
@@ -153,10 +157,10 @@
                     gd.setMode(gd.MODES.ADDARC);
                     //iplug.glow();
      
-     .mousemove(function(){
-              ilapiz.attr({fill: "blue", stroke: "none"});
-          }).click(function () {
-             gd.zoomIn();
+                    .mousemove(function(){
+                             ilapiz.attr({fill: "blue", stroke: "none"});
+                         }).click(function () {
+                            gd.zoomIn();
             
           });
      

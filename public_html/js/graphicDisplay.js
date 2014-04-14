@@ -79,6 +79,7 @@ function GraphicDisplay(displayName, width, height) {
 	
 	this.showGrid = true;
 	this.showOrigin = true;
+        this.showOriginArrow = true;
 	this.showRules = true;
 	this.gridPointer = false;
 	this.gridSpacing = 100; // Pixel
@@ -143,7 +144,9 @@ GraphicDisplay.prototype.execute = function() {
 	
 	if (this.showOrigin)
 		this.drawOrigin(this.cOutX, this.cOutY);
-                
+            
+        if (this.showOriginArrow)
+                this.drawOriginArrow(this.cOutX,  this.cOutY);
 	
 	this.drawRules();
 	
@@ -572,7 +575,7 @@ GraphicDisplay.prototype.drawToolTip = function() {
 
 // dibuja origenes
 GraphicDisplay.prototype.drawOrigin = function(cx, cy) {
-	this.context.lineWidth = 0.8;
+	this.context.lineWidth = 1;
         // Origen Horizontal
 	//this.context.strokeStyle = "#fff";
 	this.context.strokeStyle = "red";
@@ -592,6 +595,33 @@ GraphicDisplay.prototype.drawOrigin = function(cx, cy) {
         
 };
 
+GraphicDisplay.prototype.drawOriginArrow = function(cx, cy){
+        this.context.lineWidth = 3;
+        // Origen Horizontal
+	//this.context.strokeStyle = "#fff";
+	this.context.strokeStyle = "black";
+	this.context.beginPath();
+        this.context.moveTo(
+			(0 + this.cOutX) * this.zoom,
+			(-20 + this.cOutY) * this.zoom);
+        this.context.lineTo(
+			(0 + this.cOutX) * this.zoom,
+			(20 + this.cOutY) * this.zoom);
+	this.context.closePath();
+	this.context.stroke();
+        
+        //Origen Vertical
+	this.context.strokeStyle = "black";
+	this.context.beginPath();
+        this.context.moveTo(
+			(-20 + this.cOutX) * this.zoom,
+			(0 + this.cOutY) * this.zoom);
+        this.context.lineTo(
+			(20 + this.cOutX) * this.zoom,
+			(0 + this.cOutY) * this.zoom);
+	this.context.closePath();
+	this.context.stroke();
+}
 // dibuja reglas guias
 GraphicDisplay.prototype.drawRules = function() {
 	if (!this.showRules)

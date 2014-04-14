@@ -5,6 +5,7 @@
  * @returns
  */
 function LogicDisplay() {
+        // arreglo a guardar en base de datos
 	// Array of all components used inside CAD
 	this.components = new Array();
 }
