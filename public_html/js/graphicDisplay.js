@@ -3,7 +3,7 @@
  * of the CAD
  */
 // habilita funciones de grafico
-var k;
+var k, i = 0;
 function GraphicDisplay(displayName, width, height) {
 	// Enumerate all available modes
 	this.MODES = {
@@ -103,8 +103,11 @@ function GraphicDisplay(displayName, width, height) {
 	//this.tooltipDefault = "WebCAD5";
         this.tooltipDefault = "OpenCNC";
 	this.tooltip = this.tooltipDefault;
+        
+        this.tooltipCodeDefault = "Code";
+	this.tooltipCode = this.tooltipCodeDefault;
 	
-	this.keyboard = null;
+        this.keyboard = null;
 	this.mouse = null;
 }
 
@@ -116,6 +119,8 @@ GraphicDisplay.prototype.init = function() {
 	this.logicDisplay = new LogicDisplay();
 	this.logicDisplay.init();
 	
+        
+        
 	/*
 	 * INITIALIZE INPUT HANDLER 
 	 */
@@ -159,6 +164,7 @@ GraphicDisplay.prototype.execute = function() {
 	
 	// Draw to tooltip
 	this.drawToolTip();
+        this.drawToolCode();
 };
 
 // hace la cuadricula
@@ -204,6 +210,7 @@ GraphicDisplay.prototype.drawComponent = function(component, moveByX, moveByY) {
 					component.y2 + moveByY,
 					component.color,
 					component.radius);
+  
 			break;
 		case COMPONENT_TYPES.CIRCLE:
 			this.drawCircle(
@@ -370,6 +377,7 @@ GraphicDisplay.prototype.drawPoint = function(x, y, color, radius) {
 		    2, 0, 3.14159*2, false);
 	this.context.closePath();
 	this.context.stroke();
+        
 };
 
 // dibuja linea cuando se activa el boton.
@@ -382,6 +390,7 @@ GraphicDisplay.prototype.drawLine = function(x1, y1, x2, y2, color, radius) {
 	this.context.fillStyle = color;
 	this.context.strokeStyle = color;
 	this.context.beginPath();
+        /*
         if ( k === 's' && (firstAngle > 350 && firstAngle < 10) || 
                 (firstAngle > 170 && firstAngle < 190)){
             this.context.moveTo(
@@ -423,7 +432,8 @@ GraphicDisplay.prototype.drawLine = function(x1, y1, x2, y2, color, radius) {
 	this.drawPoint(x1, y1, color, radius);
 	//this.drawPoint(x2, y2, color, radius);
         //this.setToolTip('Angulo: ' + firstAngle);
-        this.setToolTip(k);
+        //this.setTextCode('angulo' + ' ' + firstAngle + ' ' + x1 + ' ' + y1 + '\n' + this.getTextCode());
+        //this.tooltipCode = 'Linea' + ' ' + firstAngle + ' ' + x1 + ' ' + y1 + '\n';
 };
 
 // dibuja circulos cuando se activa el boton.
@@ -573,6 +583,11 @@ GraphicDisplay.prototype.drawToolTip = function() {
         
 };
 
+GraphicDisplay.prototype.drawToolCode  = function(){
+    
+    document.getElementById("codex").value = this.getTextCode();
+};
+
 // dibuja origenes
 GraphicDisplay.prototype.drawOrigin = function(cx, cy) {
 	this.context.lineWidth = 1;
@@ -682,7 +697,7 @@ GraphicDisplay.prototype.drawGrid = function(camXoff, camYoff) {
 };
 
 /**
- * This method is used to perform a specified action based on the
+ * This method is used to perform a specithis.tooltipCode = "Linea" + " " +;fied action based on the
  * type of mouse action (action) see above MOUSEACTION
  * @param e
  * @param action
@@ -699,11 +714,17 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 				}
 				this.temporaryPoints[0] = this.getCursorXLocal(); // TODO this.getCursorSnapX();
 				this.temporaryPoints[1] = this.getCursorYLocal(); // TODO this.getCursorSnapY();
+                                
+                                //puntos en movimiento
+                                //this.tooltipCode = this.getTextCode() + '\n' + ' Puntos: ' + this.temporaryPoints;
 			} else if ( action === this.MOUSEACTION.DOWN ) {
 				this.logicDisplay.addComponent(new Point(
 						this.temporaryPoints[0],
 						this.temporaryPoints[1]));
+                                                
+                                                this.tooltipCode = this.getTextCode() + '\n' + ' Puntos: ' + this.temporaryPoints;
 				this.resetMode();
+                                
 			}
 			this.tooltip = "Add punto";
 			break;
@@ -737,8 +758,11 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 					this.temporaryPoints[0] = this.temporaryPoints[2];
 					this.temporaryPoints[1] = this.temporaryPoints[3];
 				}
+                                
+                                this.tooltipCode = this.getTextCode() + '\n' + ' Linea: ' + this.temporaryPoints[0] + ', ' + this.temporaryPoints[1];
 			}
 			this.tooltip = "Add linea";
+                        
 			break;
 		case this.MODES.ADDCIRCLE:
 			this.cvn.css('cursor', 'default');
@@ -763,7 +787,8 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 							this.temporaryPoints[1],
 							this.temporaryPoints[2],
 							this.temporaryPoints[3]));
-					this.resetMode();
+                                                        this.tooltipCode = this.getTextCode() + '\n' + ' Circulo: ' + this.temporaryPoints;
+					this.resetMode();      
 				}
 			}
 			this.tooltip = "Add circulo";
@@ -802,6 +827,7 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 							this.temporaryPoints[3],
 							this.temporaryPoints[4],
 							this.temporaryPoints[5]));
+                                                        this.tooltipCode = this.getTextCode() + '\n' + ' Arco: ' + this.temporaryPoints;
 					this.resetMode();
 				}
 			}
@@ -830,6 +856,8 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 							this.temporaryPoints[1],
 							this.temporaryPoints[2],
 							this.temporaryPoints[3]));
+                                                        
+                                                        this.tooltipCode = this.getTextCode() + '\n' + ' Rectangulo: ' + this.temporaryPoints;
 					this.resetMode();
 				}
 			}
@@ -1167,6 +1195,17 @@ GraphicDisplay.prototype.getAngle = function(x1, y1, x2, y2) {
 	return -1 * rad;
 };
 
+GraphicDisplay.prototype.setTextCode = function(ctext) {
+            this.tooltipCode = ctext;
+};
+
+
+GraphicDisplay.prototype.getTextCode = function() {
+	var text = this.tooltipCode;
+        //text += text + '\n';
+        return text;      
+};
+
 /*
  * Helper function used to initialize the
  * graphic environment and behaviour (mainly input events)
@@ -1200,7 +1239,7 @@ var initCAD = function(gd) {
         });
         // cuando se presione SHIFT se hagan lineas rectas.
 	gd.keyboard.addKeyEvent(true, gd.keyboard.KEYS.SHIFT, function(){
-               k = "s";
+               
         });
        
 	// Bind mouse events

@@ -4,6 +4,7 @@
                 <title>OpenCNC</title>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width">
+                <script type="text/javascript" src="js/archivotxt.js"></script>
 		<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
                 <script src="js/lib/external/jquery.min.js"></script>
 		<!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>-->
@@ -16,6 +17,7 @@
 		<script src="js/logicDisplay.js"></script>
 		<script src="js/graphicDisplay.js"></script>
                 <script src="js/world.js"></script>
+                
 		<link href="styles/main.css" rel="stylesheet">
                
 	</head>
@@ -32,9 +34,23 @@
                     <div id="paper"></div>
                 </div>
             <div id="comandos">
-                <textarea name="" rows="45" cols="20" spellcheck="false">
+                <textarea id="codex" name="codex" rows="45" cols="30" spellcheck="false">
                 </textarea>
             </div>
+            
+            <div>
+                <label for="textNombre">Nombre:</label>
+                <input type="text" id="textNombre" value="Pedro Pérez <Ing. & Lic.>" />
+                <br/>
+                <label for="textTelefono">Teléfono:</label>
+                <input type="text" id="textTelefono" value="+58.212.555.5555" />
+                <br/>
+            </div>
+            <br/>
+            <input type="button" id="boton-txt" value="Descargar TXT" />
+            <br/>
+            <input type="button" id="boton-xml" value="Descargar XML" />
+            
                 </body>
                 
                 
