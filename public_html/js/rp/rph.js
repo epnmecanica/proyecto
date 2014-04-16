@@ -191,7 +191,9 @@
           iadvan.mousemove(function(){
               iadvan.attr({fill: colors, stroke: "none"});
           }).click(function () {
-                        
+              //alert("shape");
+                //gd.setMode(gd.MODES.ADDSHAPE);  
+                //gd.setModeShape(getShapeSerbatoioOrizzontale);
           });
           iwizar.mousemove(function(){
               iwizar.attr({fill: colors, stroke: "none"});
@@ -228,7 +230,7 @@
           icreateG.mousemove(function(){
               icreateG.attr({fill: colors, stroke: "none"});
           }).click(function () {
-                         
+               arranqueTXT();          
           });
           iadd.mousemove(function(){
               iadd.attr({fill: colors, stroke: "none"});
@@ -287,5 +289,4 @@
              gd.setMode(gd.MODES.ADDPOINT);
           });
  }
-
-
+ 

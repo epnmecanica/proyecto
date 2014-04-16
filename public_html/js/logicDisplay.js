@@ -13,10 +13,15 @@ function LogicDisplay() {
 LogicDisplay.prototype.init = function() {
            //this.test(); // This create a list of basic components
            //this.importJSON(JSON.parse(this.exportJSON()), this.components);
+           //this.testPunto();
 };
 
 LogicDisplay.prototype.addComponent = function(component) {
 	this.components.push(component);
+};
+
+LogicDisplay.prototype.testPunto = function(){
+        this.components.push(new Point(0, 0));
 };
 
 LogicDisplay.prototype.test = function() {

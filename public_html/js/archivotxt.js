@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-
 function descargarArchivo(contenidoEnBlob, nombreArchivo) {
                     var reader = new FileReader();
                     reader.onload = function (event) {
@@ -28,6 +27,7 @@ function descargarArchivo(contenidoEnBlob, nombreArchivo) {
                     return {
                         nombre: document.getElementById('textNombre').value,
                         telefono: document.getElementById('textTelefono').value,
+                        contenido: document.getElementById('codex').value,
                         fecha: (new Date()).toLocaleDateString()
                     };
                 };
@@ -58,6 +58,9 @@ function descargarArchivo(contenidoEnBlob, nombreArchivo) {
                     texto.push('Fecha: ');
                     texto.push(datos.fecha);
                     texto.push('\n');
+                    texto.push(datos.contenido);
+                    texto.push('\n');
+                    texto.push('credits: all code was create by Mauricio Duque');
                     //El contructor de Blob requiere un Array en el primer parámetro
                     //así que no es necesario usar toString. el segundo parámetro
                     //es el tipo MIME del archivo
@@ -82,18 +85,22 @@ function descargarArchivo(contenidoEnBlob, nombreArchivo) {
                     texto.push(escaparXML(datos.fecha));
                     texto.push('</fecha>\n');
                     texto.push('</datos>');
+               
                     //No olvidemos especificar el tipo MIME correcto :)
                     return new Blob(texto, {
                         type: 'application/xml'
                     });
                 };
 
-                document.getElementById('boton-xml').addEventListener('click', function () {
+                function arranqueXML(){
                     var datos = obtenerDatos();
                     descargarArchivo(generarXml(datos), 'archivo.xml');
-                }, false);
-
-                document.getElementById('boton-txt').addEventListener('click', function () {
+                }
+                function arranqueTXT(){
                     var datos = obtenerDatos();
                     descargarArchivo(generarTexto(datos), 'archivo.txt');
-                }, false);
+                };
+               
+
+
+

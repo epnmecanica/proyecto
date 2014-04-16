@@ -3,6 +3,7 @@
  * of the CAD
  */
 // habilita funciones de grafico
+
 var k, i = 0;
 function GraphicDisplay(displayName, width, height) {
 	// Enumerate all available modes
@@ -201,6 +202,7 @@ GraphicDisplay.prototype.drawComponent = function(component, moveByX, moveByY) {
 					component.y + moveByY,
 					component.color,
 					component.radius);
+                                        
 			break;
 		case COMPONENT_TYPES.LINE:
 			this.drawLine(
@@ -210,6 +212,7 @@ GraphicDisplay.prototype.drawComponent = function(component, moveByX, moveByY) {
 					component.y2 + moveByY,
 					component.color,
 					component.radius);
+                                        
   
 			break;
 		case COMPONENT_TYPES.CIRCLE:
@@ -383,9 +386,11 @@ GraphicDisplay.prototype.drawPoint = function(x, y, color, radius) {
 // dibuja linea cuando se activa el boton.
 GraphicDisplay.prototype.drawLine = function(x1, y1, x2, y2, color, radius) {
         
+        //para hacer con angulos.
+        /*
         var firstAngle = this.getAngle(x1, y1, x2, y2);
         firstAngle = Math.round((firstAngle * (-180 / Math.PI)));
-        
+        */
 	this.context.lineWidth = radius;
 	this.context.fillStyle = color;
 	this.context.strokeStyle = color;
@@ -963,9 +968,28 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 			break;
 		case this.MODES.EDIT:
 			// TODO: In the next release
+                        this.cvn.css('cursor', 'default');
+                        
+			if (action === this.MOUSEACTION.MOVE) {
+				if ( this.selectedComponent === null ) {
+					this.temporarySelectedComponent = this.findIntersectionWith(
+							this.getCursorXLocal(),
+							this.getCursorYLocal());
+				} else{
+                                        this.editComponent(this.selectedComponent);
+				}
+			} else if (action === this.MOUSEACTION.DOWN) {
+				if ( this.selectedComponent === null ) {
+					this.selectComponent(this.temporarySelectedComponent);
+				} else {
+					this.unselectComponent();
+				}
+			}
+			
 			this.tooltip = "Editar";
 			break;
-		case this.MODES.DELETE:
+		
+                case this.MODES.DELETE:
 			this.cvn.css('cursor', 'default');
 			if (action === this.MOUSEACTION.MOVE) {
 				if ( this.selectedComponent === null ) {
@@ -982,6 +1006,69 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 			break;
 		default:
 			this.tooltip = this.tooltipDefault;
+	}
+};
+
+GraphicDisplay.prototype.editComponent = function(index){
+ //TODO editar componentes 
+            if (index !== null) {
+		switch ( this.logicDisplay.components[index].type ) {
+			case COMPONENT_TYPES.POINT:
+                            
+                                //temporal para dar el punto de movimiento.
+                                var dx = document.getElementById('xPos').value;
+                                var dy = document.getElementById('yPos').value;
+                                
+                                this.logicDisplay.components[index].x = dx;
+				this.logicDisplay.components[index].y = dy;
+                                break;
+			case COMPONENT_TYPES.LABEL:
+			case COMPONENT_TYPES.SHAPE:
+				var dx = x - this.logicDisplay.components[index].x;
+				var dy = y - this.logicDisplay.components[index].y;
+				
+				this.logicDisplay.components[index].x += dx;
+				this.logicDisplay.components[index].y += dy;
+				break;
+			case COMPONENT_TYPES.LINE:
+                        case COMPONENT_TYPES.CIRCLE:
+                        case COMPONENT_TYPES.RECTANGLE:
+                                var dx = prompt("x: ");
+                                var dy = prompt("y: ");
+                                var dx1 = prompt("x1: ");
+                                var dy1 = prompt("y1: ");
+                                
+                                this.logicDisplay.components[index].x = dx;
+				this.logicDisplay.components[index].y = dy;
+                                this.logicDisplay.components[index].x1 = dx;
+				this.logicDisplay.components[index].y1 = dy;
+                               
+                                break;
+			                             
+			
+			case COMPONENT_TYPES.MEASURE:
+				var dx = x - this.logicDisplay.components[index].x1;
+				var dy = y - this.logicDisplay.components[index].y1;
+				
+				this.logicDisplay.components[index].x1 += dx;
+				this.logicDisplay.components[index].y1 += dy;
+				this.logicDisplay.components[index].x2 += dx;
+				this.logicDisplay.components[index].y2 += dy;
+				break;
+                                
+                                //Organizar para poder mover el arco
+			case COMPONENT_TYPES.ARC:
+				var dx = x - this.logicDisplay.components[index].x1;
+				var dy = y - this.logicDisplay.components[index].y1;
+				
+				this.logicDisplay.components[index].x1 += dx;
+				this.logicDisplay.components[index].y1 += dy;
+				this.logicDisplay.components[index].x2 += dx;
+				this.logicDisplay.components[index].y2 += dy;
+				this.logicDisplay.components[index].x3 += dx;
+				this.logicDisplay.components[index].y3 += dy;
+				break;
+		}
 	}
 };
 
@@ -1010,6 +1097,8 @@ GraphicDisplay.prototype.moveComponent = function(index, x, y) {
 				this.logicDisplay.components[index].x2 += dx;
 				this.logicDisplay.components[index].y2 += dy;
 				break;
+                                
+                                //Organizar para poder mover el arco
 			case COMPONENT_TYPES.ARC:
 				var dx = x - this.logicDisplay.components[index].x1;
 				var dy = y - this.logicDisplay.components[index].y1;
@@ -1250,6 +1339,7 @@ var initCAD = function(gd) {
 			gd.gridPointer = true;
 		
 		gd.performAction(e, gd.MOUSEACTION.MOVE);
+                
 	});
 	
 	gd.cvn.mouseout(function(e) {
