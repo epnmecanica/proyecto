@@ -20,7 +20,8 @@ function GraphicDisplay(displayName, width, height) {
 			TRIM : 21,
 			NAVIGATE : 22,
 			MOVE : 23,
-			EDIT : 24
+			EDIT : 24,
+                        NAN : 25
 	};
 	
 	// Enumerate all type of action
@@ -166,6 +167,7 @@ GraphicDisplay.prototype.execute = function() {
 	// Draw to tooltip
 	this.drawToolTip();
         this.drawToolCode();
+        
 };
 
 // hace la cuadricula
@@ -616,6 +618,9 @@ GraphicDisplay.prototype.drawOrigin = function(cx, cy) {
 };
 
 GraphicDisplay.prototype.drawOriginArrow = function(cx, cy){
+        
+        var delta = this.getDistance(0, 0, this.getCursorXLocal(), this.getCursorYLocal());
+        
         this.context.lineWidth = 3;
         // Origen Horizontal
 	//this.context.strokeStyle = "#fff";
@@ -627,21 +632,28 @@ GraphicDisplay.prototype.drawOriginArrow = function(cx, cy){
         this.context.lineTo(
 			(0 + this.cOutX) * this.zoom,
 			(20 + this.cOutY) * this.zoom);
-	this.context.closePath();
-	this.context.stroke();
-        
+	
         //Origen Vertical
-	this.context.strokeStyle = "black";
-	this.context.beginPath();
+	
         this.context.moveTo(
 			(-20 + this.cOutX) * this.zoom,
 			(0 + this.cOutY) * this.zoom);
         this.context.lineTo(
 			(20 + this.cOutX) * this.zoom,
 			(0 + this.cOutY) * this.zoom);
+                        
+        if(delta >= 0 && delta <= this.snapTolerance / this.zoom){
+            this.context.strokeStyle = "white";
+            this.context.arc(
+			(0 + this.cOutX) * this.zoom, 
+                        (0 + this.cOutY) * this.zoom, 
+                        2, 0, 3.14159*2, false);
+        }                
+        
+                    
 	this.context.closePath();
 	this.context.stroke();
-}
+};
 // dibuja reglas guias
 GraphicDisplay.prototype.drawRules = function() {
 	if (!this.showRules)
@@ -730,13 +742,13 @@ GraphicDisplay.prototype.performAction = function(e, action) {
                                                 this.tooltipCode = this.getTextCode() + '\n' + ' Puntos: ' + this.temporaryPoints;
 				this.resetMode();
                                 
+                                
 			}
 			this.tooltip = "Add punto";
 			break;
 		case this.MODES.ADDLINE:
-			if (e.which === 3)
-				this.resetMode();
-			
+			 
+                       
 			this.cvn.css('cursor', 'default');
 			if (action === this.MOUSEACTION.MOVE) {
 				if (this.temporaryComponentType === null) {
@@ -762,9 +774,12 @@ GraphicDisplay.prototype.performAction = function(e, action) {
 					
 					this.temporaryPoints[0] = this.temporaryPoints[2];
 					this.temporaryPoints[1] = this.temporaryPoints[3];
+                                        // para quitar las lineas continuas.
+                                        //this.resetMode();
 				}
                                 
                                 this.tooltipCode = this.getTextCode() + '\n' + ' Linea: ' + this.temporaryPoints[0] + ', ' + this.temporaryPoints[1];
+                                
 			}
 			this.tooltip = "Add linea";
                         
@@ -1016,8 +1031,8 @@ GraphicDisplay.prototype.editComponent = function(index){
 			case COMPONENT_TYPES.POINT:
                             
                                 //temporal para dar el punto de movimiento.
-                                var dx = document.getElementById('xPos').value;
-                                var dy = document.getElementById('yPos').value;
+                                var dx = document.getElementById('x1Pos').value;
+                                var dy = document.getElementById('y1Pos').value;
                                 
                                 this.logicDisplay.components[index].x = dx;
 				this.logicDisplay.components[index].y = dy;
@@ -1033,15 +1048,15 @@ GraphicDisplay.prototype.editComponent = function(index){
 			case COMPONENT_TYPES.LINE:
                         case COMPONENT_TYPES.CIRCLE:
                         case COMPONENT_TYPES.RECTANGLE:
-                                var dx = prompt("x: ");
-                                var dy = prompt("y: ");
-                                var dx1 = prompt("x1: ");
-                                var dy1 = prompt("y1: ");
+                                var dx = document.getElementById('x1Pos').value;
+                                var dy = document.getElementById('y1Pos').value;
+                                var dx2 = document.getElementById('x2Pos').value;
+                                var dy2 = document.getElementById('y2Pos').value;
                                 
                                 this.logicDisplay.components[index].x = dx;
 				this.logicDisplay.components[index].y = dy;
-                                this.logicDisplay.components[index].x1 = dx;
-				this.logicDisplay.components[index].y1 = dy;
+                                this.logicDisplay.components[index].x1 = dx2;
+				this.logicDisplay.components[index].y1 = dy2;
                                
                                 break;
 			                             
@@ -1228,6 +1243,18 @@ GraphicDisplay.prototype.getDistance = function(x1, y1, x2, y2) {
 	return distance.toFixed(2);
 };
 
+// encontrar la interseccion con los objetos, no los vertices.
+GraphicDisplay.prototype.findIntersectionObject = function(){
+        for ( var i = this.logicDisplay.components.length - 1; i >= 0; i-- ) {
+		if (!this.logicDisplay.components[i].isActive()){
+                    
+                }		
+		
+	}
+	
+	return null;
+};
+
 // TODO: Move in Utils.
 GraphicDisplay.prototype.findIntersectionWith = function(x, y) {
 	for ( var i = this.logicDisplay.components.length - 1; i >= 0; i-- ) {
@@ -1247,7 +1274,8 @@ GraphicDisplay.prototype.findIntersectionWith = function(x, y) {
 			case COMPONENT_TYPES.RECTANGLE:
 			case COMPONENT_TYPES.MEASURE:
 				var delta = this.getDistance(x ,y, this.logicDisplay.components[i].x1, this.logicDisplay.components[i].y1);
-				if ( delta >= 0 && delta <= this.snapTolerance / this.zoom )
+                                var delta2 = this.getDistance(x ,y, this.logicDisplay.components[i].x2, this.logicDisplay.components[i].y2);
+				if ( delta >= 0 && delta <= this.snapTolerance / this.zoom ||delta2 >= 0 && delta2 <= this.snapTolerance / this.zoom  )
 					return i;
 				break;
 		}
@@ -1325,6 +1353,9 @@ var initCAD = function(gd) {
 	});
         gd.keyboard.addKeyEvent(true, gd.keyboard.KEYS.N, function(){
                 gd.setMode(gd.MODES.NAVIGATE);
+        });
+        gd.keyboard.addKeyEvent(true, gd.keyboard.KEYS.ESC, function(){
+                gd.setMode(gd.MODES.NAN);
         });
         // cuando se presione SHIFT se hagan lineas rectas.
 	gd.keyboard.addKeyEvent(true, gd.keyboard.KEYS.SHIFT, function(){
