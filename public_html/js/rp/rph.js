@@ -276,7 +276,8 @@
           isync.mousemove(function(){
               isync.attr({fill: colors, stroke: "none"});
           }).click(function () {
-             gd.setMode(gd.MODES.ADDCIRCLE);
+             //gd.setMode(gd.MODES.ADDCIRCLE);
+             gd.setMode(gd.MODES.ADDARC);
           });
           ilabel.mousemove(function(){
               ilabel.attr({fill: colors, stroke: "none"});

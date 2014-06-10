@@ -3,6 +3,7 @@
 $(document).ready(function() {
         var gd = new GraphicDisplay("CADCanvas", 800, 600);
         gd.unitMeasure = "cm";
+        //gd.unitAngle = "Rad";
         gd.unitConversionFactor = 1/100; 
         gd.showOrigin = true;
         gd.showGrid = true;

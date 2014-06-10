@@ -89,6 +89,7 @@ function GraphicDisplay(displayName, width, height) {
 	this.conversionFactor = 1;
 	this.unitName = "px";
 	this.unitMeasure = "m";
+        this.unitAngle = "Grade"
 	this.unitFactor = 1;
 	this.unitConversionFactor = 1/100;
 	
@@ -289,6 +290,12 @@ GraphicDisplay.prototype.drawTemporaryComponent = function() {
 					this.temporaryPoints[3],
 					this.selectedColor,
 					this.selectedRadius);
+                        this.drawAngle(
+					this.temporaryPoints[0],
+					this.temporaryPoints[1],
+					this.temporaryPoints[2],
+					this.temporaryPoints[3],
+                                        this.selectedColor);
 			break;
 		case COMPONENT_TYPES.CIRCLE:
 			this.drawCircle(
@@ -488,6 +495,31 @@ GraphicDisplay.prototype.drawMeasure = function(x1, y1, x2, y2, color, radius) {
 			distance.toFixed(2) + "" + this.unitMeasure,
 			(this.cOutX + x2 - 120) * this.zoom,
 			(this.cOutY + y2 + 30 + localDiff) * this.zoom);
+};
+
+GraphicDisplay.prototype.drawAngle = function(x1, y1, x2, y2, color){
+        var angle;
+        if (this.unitAngle === "Rad"){
+            angle = this.getAngle(x1, y1, x2, y2);
+        }else if(this.unitAngle == "Grade"){
+            angle = -this.getAngle(x1, y1, x2, y2) * 180 / Math.PI;
+        }
+        
+                	
+	var localZoom = this.zoom;
+	var localDiff = 0;
+	
+	if ( this.zoom <= 0.25 ) {
+		localZoom = 0.5;
+		localDiff = 20;
+	}
+		
+	this.context.fillStyle = color;
+	this.context.font = (this.fontSize * localZoom) + "px courier";
+	this.context.fillText(
+			angle.toFixed(1) + "" + this.unitAngle,
+			(this.cOutX + x1 - 120) * this.zoom,
+			(this.cOutY + y1 + 30 + localDiff) * this.zoom);
 };
 
 // inserta un texto.
