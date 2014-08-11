@@ -214,6 +214,8 @@
           iok.mousemove(function(){
               iok.attr({fill: colors, stroke: "none"});
           }).click(function () {
+                gd.getJSON();
+                console.log(gd.getJSON());
                   /*
                     var x = document.createElement("TEXTAREA");
                     
@@ -224,7 +226,7 @@
                     
                    document.getElementById("codex").value="Codigo";
                    */
-                   
+                  // alert('ok');
                            
           });
           icreateG.mousemove(function(){
@@ -276,8 +278,8 @@
           isync.mousemove(function(){
               isync.attr({fill: colors, stroke: "none"});
           }).click(function () {
-             //gd.setMode(gd.MODES.ADDCIRCLE);
-             gd.setMode(gd.MODES.ADDARC);
+             gd.setMode(gd.MODES.ADDCIRCLE);
+             //gd.setMode(gd.MODES.ADDARC);
           });
           ilabel.mousemove(function(){
               ilabel.attr({fill: colors, stroke: "none"});
